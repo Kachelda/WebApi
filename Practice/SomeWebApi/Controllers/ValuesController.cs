@@ -5,19 +5,22 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using System.Web.Http.Results;
 using SomeWebApi.Models;
 
 namespace SomeWebApi.Controllers
 {
     //[Authorize]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ValuesController : ApiController
     {
         EmployeeContext db = new EmployeeContext();
 
         // GET api/values
-        public IEnumerable<Employee> GetEmployees()
+        public JsonResult<DbSet<Employee>> GetEmployees()
         {
-            return db.Employees;
+            return Json(db.Employees);
         }
 
         // GET api/values/5
