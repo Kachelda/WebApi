@@ -8,6 +8,9 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Results;
 using SomeWebApi.Models;
+using Practice.Domain.Core;
+using Practice.Domain.Interfaces;
+using Practice.Infrastructure.Data;
 
 namespace SomeWebApi.Controllers
 {
@@ -15,18 +18,23 @@ namespace SomeWebApi.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ValuesController : ApiController
     {
-        EmployeeContext db = new EmployeeContext();
+        IEmployeeRepository repository = new EmployeeRepository();
+
+        //public ValuesController(IEmployeeRepository r)
+        //{
+        //    repository = r;
+        //}
 
         // GET api/values
-        public JsonResult<DbSet<Employee>> GetEmployees()
+        public JsonResult<IEnumerable<Employee>> Get()
         {
-            return Json(db.Employees);
+            return Json(repository.GetEmployeesList());
         }
 
         // GET api/values/5
         public Employee GetEmployee(int id)
         {
-            Employee employee = db.Employees.Find(id);
+            Employee employee = repository.GetEmployee(id);
             return employee;
         }
 
@@ -34,8 +42,8 @@ namespace SomeWebApi.Controllers
         [HttpPost]
         public void CreateEmployee([FromBody]Employee employee)
         {
-            db.Employees.Add(employee);
-            db.SaveChanges();
+            repository.Create(employee);
+            repository.Save();
         }
 
         // PUT api/values/5
@@ -44,31 +52,21 @@ namespace SomeWebApi.Controllers
         {
             if (id == employee.Id)
             {
-                db.Entry(employee).State = EntityState.Modified;
-
-                db.SaveChanges();
+                repository.Update(employee);
+                repository.Save();
             }
         }
 
         // DELETE api/values/5
         public void Delete(int id)
         {
-            Employee employee = db.Employees.Find(id);
+            Employee employee = repository.GetEmployee(id);
 
             if (employee != null)
             {
-                db.Employees.Remove(employee);
-                db.SaveChanges();
+                repository.Delete(id);
+                repository.Save();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
