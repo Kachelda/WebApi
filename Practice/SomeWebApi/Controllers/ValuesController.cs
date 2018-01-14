@@ -26,9 +26,9 @@ namespace SomeWebApi.Controllers
         //}
 
         // GET api/values
-        public JsonResult<IEnumerable<Employee>> Get()
+        public IEnumerable<Employee> Get()
         {
-            return Json(repository.GetEmployeesList());
+            return repository.GetEmployeesList();
         }
 
         // GET api/values/5
