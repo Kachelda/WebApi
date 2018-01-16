@@ -36,11 +36,14 @@ namespace Practice.Infrastructure.Data
             db.Entry(employee).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public bool Delete(Employee employee)
         {
-            Employee employee = db.Employees.Find(id);
             if (employee != null)
+            {
                 db.Employees.Remove(employee);
+                return true;
+            }
+            return false;
         }
 
         public void Save()

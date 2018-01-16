@@ -26,47 +26,59 @@ namespace SomeWebApi.Controllers
         //}
 
         // GET api/values
-        public IEnumerable<Employee> Get()
+        public IHttpActionResult Get()
         {
-            return repository.GetEmployeesList();
+            if (repository.GetEmployeesList() != null)
+            {
+                return Ok(repository.GetEmployeesList());
+            }
+            return NotFound();
         }
 
         // GET api/values/5
-        public Employee GetEmployee(int id)
+        public IHttpActionResult GetEmployee(int id)
         {
-            Employee employee = repository.GetEmployee(id);
-            return employee;
+            if (repository.GetEmployee(id) != null)
+            {
+                return Ok(repository.GetEmployee(id));
+            }
+            return NotFound();
         }
 
         // POST api/values
         [HttpPost]
-        public void CreateEmployee([FromBody]Employee employee)
+        public IHttpActionResult CreateEmployee([FromBody]Employee employee)
         {
             repository.Create(employee);
             repository.Save();
+            return Ok();
         }
 
         // PUT api/values/5
         [HttpPut]
-        public void EditEmployee(int id, [FromBody]Employee employee)
+        public IHttpActionResult EditEmployee(int id, [FromBody]Employee employee)
         {
             if (id == employee.Id)
             {
                 repository.Update(employee);
                 repository.Save();
+                return Ok();
             }
+            return BadRequest();
         }
 
-        // DELETE api/values/5
-        public void Delete(int id)
+        //DELETE api/values/5
+        public IHttpActionResult Delete(int id)
         {
             Employee employee = repository.GetEmployee(id);
 
-            if (employee != null)
+            if (repository.Delete(employee))
             {
-                repository.Delete(id);
                 repository.Save();
+                return Ok();
             }
+            return NotFound();
         }
+
     }
 }

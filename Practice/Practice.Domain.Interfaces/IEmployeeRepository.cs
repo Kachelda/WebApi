@@ -13,7 +13,7 @@ namespace Practice.Domain.Interfaces
         Employee GetEmployee(int id);
         void Create(Employee item);
         void Update(Employee item);
-        void Delete(int id);
+        bool Delete(Employee employee);
         void Save();
     }
 }
