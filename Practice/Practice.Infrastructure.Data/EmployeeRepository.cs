@@ -25,6 +25,24 @@ namespace Practice.Infrastructure.Data
         {
             return db.Employees.Find(id);
         }
+        
+        public IEnumerable<Employee> GetChildEmployee(int parentId)
+        {
+            var result = db.Employees.Where(emp => emp.Parent == parentId);
+           
+            foreach (var item in result)
+            {
+                item.Employees.AddRange(GetChildEmployee(item.Id));
+            }
+
+            return result;
+        }
+
+        public int GetMinParentId()
+        {
+            var minParentId = db.Employees.Min(p => p.Parent);
+            return minParentId;
+        }
 
         public void Create(Employee employee)
         {

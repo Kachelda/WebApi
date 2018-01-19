@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Results;
@@ -43,6 +44,17 @@ namespace SomeWebApi.Controllers
                 return Ok(repository.GetEmployee(id));
             }
             return NotFound();
+        }
+
+        // GET api/values/GetHierarchy
+        public IHttpActionResult GetHierarchy()
+        {
+            return Ok(repository.GetChildEmployee(repository.GetMinParentId()));
+        }
+
+        public IHttpActionResult GetHierarchy(int id)
+        {
+            return Ok(repository.GetChildEmployee(id));
         }
 
         // POST api/values

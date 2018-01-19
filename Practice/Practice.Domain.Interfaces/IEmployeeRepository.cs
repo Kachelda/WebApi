@@ -11,6 +11,8 @@ namespace Practice.Domain.Interfaces
     {
         IEnumerable<Employee> GetEmployeesList();
         Employee GetEmployee(int id);
+        int GetMinParentId();
+        IEnumerable<Employee> GetChildEmployee(int parentId);
         void Create(Employee item);
         void Update(Employee item);
         bool Delete(Employee employee);

@@ -25,5 +25,12 @@ namespace Practice.Domain.Core
 
         //[JsonProperty("parentId")]
         public int Parent { get; set; }
+
+        public List<Employee> Employees { get; set; }
+
+        public Employee()
+        {
+            Employees = new List<Employee>();
+        }
     }
 }

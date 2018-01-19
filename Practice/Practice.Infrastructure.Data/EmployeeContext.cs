@@ -11,5 +11,10 @@ namespace Practice.Infrastructure.Data
     public class EmployeeContext: DbContext
     {
         public DbSet<Employee> Employees { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>().Ignore(e => e.Employees);
+        }
     }
 }
